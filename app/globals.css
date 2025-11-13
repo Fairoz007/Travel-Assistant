@@ -176,6 +176,47 @@
     transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(45, 106, 79, 0.15);
   }
+
+  /* 📆 Calendar container */
+  .daypicker {
+    @apply bg-white rounded-xl shadow-xl p-4 border border-gray-200;
+  }
+
+  /* Month title */
+  .caption_label {
+    @apply text-[#2D6A4F] font-semibold text-lg;
+  }
+
+  /* Weekday */
+  .head_cell {
+    @apply text-gray-500 font-semibold text-sm p-2;
+  }
+
+  /* Navigation buttons */
+  .nav_button {
+    @apply text-[#2D6A4F] p-2 rounded-md hover:bg-[#E9F9F1] transition;
+  }
+
+  /* Each day */
+  .day {
+    @apply w-10 h-10 flex items-center justify-center rounded-lg
+           text-gray-800 cursor-pointer transition;
+  }
+
+  /* Hover */
+  .day:hover {
+    @apply bg-[#E9F9F1] text-[#2D6A4F];
+  }
+
+  /* Selected */
+  .day_selected {
+    @apply bg-[#52B788] text-white font-semibold rounded-lg shadow;
+  }
+
+  /* Today ring */
+  .day_today:not(.day_selected) {
+    @apply border border-[#52B788] text-[#2D6A4F];
+  }
 }
 
 @keyframes fadeIn {

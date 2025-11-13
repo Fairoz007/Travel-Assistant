@@ -3,12 +3,14 @@
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, MapPin } from "lucide-react"
 import Link from "next/link"
 import { getSupabaseClient } from "@/lib/supabase/client"
 import { TripCard } from "@/components/trip-card"
+// Using the premium DatePicker component with advanced styling
+import DatePicker from "@/components/ui/custom-date-picker"
 
-const DESTINATIONS = ["All", "Paris", "Tokyo", "Bali", "New York", "Dubai"]
+const DESTINATIONS = ["All"]
 const BUDGETS = ["All", "Under ₹50K", "₹50K-₹1L", "₹1L-₹2.5L", "₹2.5L+"]
 
 export default function ExplorePage() {
@@ -16,6 +18,8 @@ export default function ExplorePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [selectedDestination, setSelectedDestination] = useState("All")
   const [selectedBudget, setSelectedBudget] = useState("All")
+  const [startDate, setStartDate] = useState<Date>()
+  const [endDate, setEndDate] = useState<Date>()
 
   useEffect(() => {
     const fetchTrips = async () => {
@@ -35,6 +39,14 @@ export default function ExplorePage() {
         query = query.eq("budget", selectedBudget)
       }
 
+      if (startDate) {
+        query = query.gte("start_date", startDate.toISOString().split('T')[0])
+      }
+
+      if (endDate) {
+        query = query.lte("end_date", endDate.toISOString().split('T')[0])
+      }
+
       const { data, error } = await query
 
       if (error) console.error("Error fetching trips:", error)
@@ -43,7 +55,7 @@ export default function ExplorePage() {
     }
 
     fetchTrips()
-  }, [selectedDestination, selectedBudget])
+  }, [selectedDestination, selectedBudget, startDate, endDate])
 
   return (
     <div className="min-h-screen bg-white">
@@ -104,6 +116,26 @@ export default function ExplorePage() {
                     {budget}
                   </Badge>
                 ))}
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <h3 className="text-xl font-display font-bold text-[#2D6A4F] tracking-tight">
+                Travel Dates
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <DatePicker
+                  label="Start Date"
+                  value={startDate}
+                  onChange={setStartDate}
+                  placeholder="Select your departure date"
+                />
+                <DatePicker
+                  label="End Date"
+                  value={endDate}
+                  onChange={setEndDate}
+                  placeholder="Select your return date"
+                />
               </div>
             </div>
           </div>

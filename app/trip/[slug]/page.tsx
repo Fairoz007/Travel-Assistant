@@ -121,6 +121,7 @@ export default async function TripPage({ params }: { params: { slug: string } })
             </Card>
           </TabsContent>
         </Tabs>
+      </div>
     </div>
   )
 }
